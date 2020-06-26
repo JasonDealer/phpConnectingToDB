@@ -13,8 +13,9 @@
         <ul>
             <?php
                 while(($cat = mysqli_fetch_assoc($result))) {
-                        $articles_count = mysqli_query($connection, "SELECT * FROM `articles` WHERE `categorie_id` = " . $cat['id']);
-                        echo '<li>' . $cat['title'] . ' ('. mysqli_num_rows($articles_count) .')</li>';
+                        $articles_count = mysqli_query($connection, "SELECT COUNT(`id`) AS `total_count` FROM `articles` WHERE `categorie_id` = " . $cat['id']);
+                        $articles_count_res = mysqli_fetch_assoc($articles_count);
+                        echo '<li>' . $cat['title'] . ' ('. $articles_count_res['total_count'] .')</li>';
                     }
             ?>
         </ul>
