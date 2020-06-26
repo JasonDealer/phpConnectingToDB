@@ -6,13 +6,21 @@
     }
 
     $result = mysqli_query($connection, "SELECT * FROM `articles_categories`");
-?>
 
-<ul>
-    <?php
-        while(($cat = mysqli_fetch_assoc($result)))
-        {
-            echo '<li>' . $cat['title'] . '</li>';
-        }
-    ?>
-</ul>
+    if( mysqli_num_rows($result) == 0 ) {
+        echo 'Категорий не найдено';
+    } else {?>
+        <ul>
+            <?php
+                while(($cat = mysqli_fetch_assoc($result))) {
+                        $articles_count = mysqli_query($connection, "SELECT * FROM `articles` WHERE `categorie_id` = " . $cat['id']);
+                        echo '<li>' . $cat['title'] . ' ('. mysqli_num_rows($articles_count) .')</li>';
+                    }
+            ?>
+        </ul>
+        <?php 
+    }?>
+
+<?php
+    mysqli_close($connection);
+?>
